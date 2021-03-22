@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moviesApi from 'Composables/useApi';
-import barto from './barto.png';
+import barto from 'assets/barto.png';
 
 class CastList extends Component {
   state = {
@@ -29,6 +29,7 @@ class CastList extends Component {
                 <img
                   src={avatar ? `https://image.tmdb.org/t/p/w500/${avatar}` : barto}
                   alt={name}
+                  width={150}
                 />
                 <p>{name}</p>
                 <p>{`Character: ${character}`}</p>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
+
 import moviesApi from 'Composables/useApi';
 import MovieList from 'Components/MoviesList';
 import Searchbar from 'Components/Searchbar';

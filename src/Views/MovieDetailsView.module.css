@@ -1,0 +1,12 @@
+.link {
+  color: rgb(24, 129, 250);
+}
+
+.link:hover,
+.link:focus {
+  color: #f50057;
+}
+
+.activeLink {
+  color: #f50057;
+}

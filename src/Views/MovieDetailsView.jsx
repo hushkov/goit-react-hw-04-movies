@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
+import { NavLink, Route } from 'react-router-dom';
+
+import { Button, Typography } from '@material-ui/core';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Grid from '@material-ui/core/Grid';
 
 import moviesApi from 'Composables/useApi';
 import CastList from 'Components/CastList';
 import ReviewsList from 'Components/ReviewsList';
+import styles from './MovieDetailsView.module.css';
 import routes from 'routes';
 
 class MovieDetailsView extends Component {
   state = {
     movieDetails: {},
-
     error: null,
   };
 
@@ -30,6 +34,7 @@ class MovieDetailsView extends Component {
 
   render() {
     const { path, url } = this.props.match;
+    const { location } = this.props;
     const { cast, reviews } = routes;
 
     const {
@@ -41,36 +46,80 @@ class MovieDetailsView extends Component {
       vote_average: votes,
     } = this.state.movieDetails;
 
+    const titleAndDate = date && `${title} (${date.substring(0, 4)})`;
+    const userScore = votes && `User Score: ${votes * 10}%`;
+
     return (
       <>
         {title && (
-          <div>
-            <button type="button" onClick={this.handleGoBack}>
-              Go Back
-            </button>
-            <h2>DetailesView</h2>
-            <p>
-              {title}
-              {` (${date.substring(0, 4)})`}
-            </p>
-            <p>{`User Score: ${votes * 10}%`}</p>
-            <img src={`https://image.tmdb.org/t/p/w500/${poster}`} alt={title} />
-            <p>Overview</p>
-            <p>{overview}</p>
-            <p>Genres</p>
-            <ul>
-              {genres.map(({ name, id }) => (
-                <li key={id}>{name}</li>
-              ))}
-            </ul>
-            <ul>
-              <li>
-                <Link to={`${url}${cast}`}>Cast</Link>
-              </li>
-              <li>
-                <Link to={`${url}${reviews}`}>Reviews</Link>
-              </li>
-            </ul>
+          <div className="detailsRoot">
+            <Button
+              type="button"
+              onClick={this.handleGoBack}
+              color="secondary"
+              variant="contained"
+              startIcon={<ArrowBackIosIcon />}
+            >
+              <span>Go Back</span>
+            </Button>
+            <Grid container direction="row">
+              <Grid item lg={6}>
+                <Typography variant="h5" component="h3">
+                  {titleAndDate}
+                </Typography>
+
+                <Typography variant="h6" component="h4">
+                  {userScore}
+                </Typography>
+
+                <img
+                  src={`https://image.tmdb.org/t/p/w500/${poster}`}
+                  alt={title}
+                  width={500}
+                />
+              </Grid>
+
+              <Grid item lg={6}>
+                <Typography variant="h6" component="h4">
+                  Overview
+                </Typography>
+                <Typography>{overview}</Typography>
+                <Typography variant="h6" component="h4">
+                  Genres
+                </Typography>
+                <ul>
+                  {genres.map(({ name, id }) => (
+                    <li key={id}>{name}</li>
+                  ))}
+                </ul>
+                <ul>
+                  <li>
+                    <NavLink
+                      to={{
+                        pathname: `${url}${cast}`,
+                        state: { from: location?.state?.from || location },
+                      }}
+                      className={styles.link}
+                      activeClassName={styles.activeLink}
+                    >
+                      Cast
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to={{
+                        pathname: `${url}${reviews}`,
+                        state: { from: location?.state?.from || location },
+                      }}
+                      className={styles.link}
+                      activeClassName={styles.activeLink}
+                    >
+                      Reviews
+                    </NavLink>
+                  </li>
+                </ul>
+              </Grid>
+            </Grid>
             <Route path={`${path}${cast}`} component={CastList} />
             <Route path={`${path}${reviews}`} component={ReviewsList} />
           </div>

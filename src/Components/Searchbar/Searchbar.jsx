@@ -1,4 +1,14 @@
 import PropTypes from 'prop-types';
+import { TextField, Button, makeStyles } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+
+const useStyles = makeStyles({
+  field: {
+    marginTop: 20,
+    marginBottom: 20,
+    display: 'block',
+  },
+});
 
 const Searchbar = ({ onSubmit }) => {
   const handleSubmit = eve => {
@@ -9,18 +19,26 @@ const Searchbar = ({ onSubmit }) => {
     eve.currentTarget.query.value = '';
   };
 
+  const classes = useStyles();
+
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        autoComplete="off"
-        autoFocus
-        placeholder="Search movies"
+    <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+      <TextField
+        className={classes.field}
         name="query"
+        label="Search Movie"
+        variant="outlined"
+        color="secondary"
+        fullWidth
       />
-      <button type="submit">
+      <Button
+        type="submit"
+        color="secondary"
+        variant="contained"
+        endIcon={<SearchIcon />}
+      >
         <span>Search</span>
-      </button>
+      </Button>
     </form>
   );
 };

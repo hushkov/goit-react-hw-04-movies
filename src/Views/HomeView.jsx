@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { Typography } from '@material-ui/core';
 import MoviesList from 'Components/MoviesList';
 import moviesApi from 'Composables/useApi';
+
+import Container from '@material-ui/core/Container';
 
 class HomeView extends Component {
   state = {
@@ -20,10 +23,12 @@ class HomeView extends Component {
   render() {
     const { moviesList } = this.state;
     return (
-      <div>
-        <h1>Trending Today</h1>
+      <Container>
+        <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
+          Trending Today
+        </Typography>
         {moviesList && <MoviesList moviesList={moviesList} />}
-      </div>
+      </Container>
     );
   }
 }
